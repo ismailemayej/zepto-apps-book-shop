@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Book {
   id: number;
@@ -8,6 +8,16 @@ interface Book {
 const Navbar = () => {
   const [datas, setDatas] = useState<Book[]>([]);
   const [value, setValue] = useState<string>("");
+  useEffect(() => {
+    try {
+      fetchData({
+        target: { value: "" },
+      } as React.ChangeEvent<HTMLInputElement>);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, []);
+  // data handle change On search box
   const fetchData = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
     try {
@@ -40,11 +50,13 @@ const Navbar = () => {
         </div>
       </nav>
       {value &&
-        datas.map((item) => (
-          <div className="mx-16 my-3 border-b" key={item.id}>
-            {item.title}
-          </div>
-        ))}
+        datas
+          .filter((item) => item?.title.startsWith(value))
+          .map((item) => (
+            <div className="mx-16 my-3 border-b" key={item.id}>
+              {item.title}
+            </div>
+          ))}
     </div>
   );
 };

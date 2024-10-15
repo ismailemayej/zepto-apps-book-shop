@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import BookList from "../BookList";
+import Loading from "../Loading";
+import { Context } from "../../App";
 export type Book = {
   id: number;
   title: string;
@@ -11,34 +13,12 @@ export type Book = {
 };
 
 const Home = () => {
-  const [books, setBooks] = useState<Book[]>([]);
+  // data fetching use UseContext
+  const books = useContext(Context);
   const [currentPage, setCurrentPage] = useState(1);
-
-  // Fetch Books Data by Api
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `https://gutendex.com/books/?page=${currentPage}`
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        const data = await response.json();
-        setBooks(data.results);
-      } catch (error) {
-        console.error("There was a problem with the fetch operation:", error);
-      }
-    };
-
-    fetchData();
-  }, [currentPage]);
-
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
   };
-
   return (
     <div>
       <div className="grid lg:grid-cols-3 gap-2 md:grid-cols-2 grid-cols-1 px-7 py-2 shadow-lg bg-white rounded-lg">
@@ -46,7 +26,7 @@ const Home = () => {
         {books ? (
           books?.map((book) => <BookList key={book.id} book={book} />)
         ) : (
-          <p>NO Data</p>
+          <Loading />
         )}
 
         {/* pagination */}

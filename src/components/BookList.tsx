@@ -16,7 +16,7 @@ const BookList = ({ book }: { book: Book }) => {
         />
       </div>
 
-      <div className="flex-1 border h-72 p-2 rounded-xl">
+      <div className="flex-1 border h-[19rem] p-2 rounded-xl">
         <h2 className="text-xl font-bold mb-2">{book.title}</h2>
         <p className="text-sm text-gray-600 mb-2">
           <span className="font-semibold">Author:</span>{" "}

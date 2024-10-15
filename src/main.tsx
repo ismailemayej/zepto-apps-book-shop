@@ -6,6 +6,7 @@ import WishList from "./components/WishList/WishList";
 import "./index.css";
 import App from "./App";
 import Home from "./components/Home/Home";
+
 const router = createBrowserRouter([
   {
     path: "/",
