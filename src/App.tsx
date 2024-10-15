@@ -1,18 +1,14 @@
+import { Outlet } from "react-router-dom";
 import "./App.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./components/Navbar/Home/Home";
-import WishList from "./components/Navbar/WishList/WishList";
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-    // this is Children Route
-    children: [{ path: "/wishlist", element: <WishList /> }],
-  },
-]);
+import Navbar from "./components/Navbar/Navbar";
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <div>
+      <Navbar />
+      <Outlet />
+    </div>
+  );
 }
 
 export default App;
