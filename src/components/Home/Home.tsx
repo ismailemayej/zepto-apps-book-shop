@@ -16,7 +16,7 @@ const Home = () => {
   // data fetching use UseContext---------------------------------
   const books = useContext(Context);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postPerPage] = useState(6);
+  const [postPerPage] = useState(10);
   // pagination------------------------------------
   const LIndex = currentPage * postPerPage;
   const FIndex = LIndex - postPerPage;
@@ -50,7 +50,7 @@ const Home = () => {
       <nav className="border p-1">
         <ul className="flex justify-center items-center text-center border">
           {/* prev page button */}
-          <li className="border-r p-1.5 text-center hover:bg-slate-300 hover:border hover: rounded-lg bg-blue-500 text-white px-6 hover:text-black">
+          <li className="border-r p-1.5 text-center hover:bg-slate-300 hover:border hover: rounded-lg bg-slate-200 mx-2 px-6 hover:text-black">
             <a href="#" onClick={prePage}>
               Prev
             </a>
@@ -69,7 +69,7 @@ const Home = () => {
             </li>
           ))}
           {/* next page button */}
-          <li className="border-r p-1.5 text-center hover:bg-slate-300 hover:border hover: rounded-lg bg-blue-500 text-white px-6 hover:text-black">
+          <li className="border-r p-1.5 text-center hover:bg-slate-300 hover:border hover: rounded-lg bg-slate-200 mx-2 px-6 hover:text-black">
             <a href="#" onClick={nextPage}>
               Next
             </a>
