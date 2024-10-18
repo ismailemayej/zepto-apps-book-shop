@@ -64,11 +64,19 @@ const WishList = () => {
         <ul className="px-1">
           {wishlist.map((book) => (
             <li
-              className="border-b my-2 px-2 flex gap-2 justify-between"
+              className="border-b my-2 flex gap-2 justify-between items-center"
               key={book.id}
             >
-              <h1 className="hover:bg-orange-200">{book.title}</h1>
-              <button onClick={() => removeItem(book.id)}>
+              <img
+                src={book.formats["image/jpeg"]}
+                alt={book.title}
+                className="w-12 h-12"
+              />
+
+              <h1 className="hover:bg-orange-200 p-2 w-full px-4 rounded-lg">
+                {book.title}
+              </h1>
+              <button className="pb-2" onClick={() => removeItem(book.id)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -78,7 +86,7 @@ const WishList = () => {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="icon-remove text-gray-700 hover:text-red-500 transition-colors duration-300 cursor-pointer"
+                  className="icon-remove pn-1 text-gray-700 hover:text-red-500 transition-colors duration-300 cursor-pointer"
                   viewBox="0 0 24 24"
                 >
                   <path d="M3 6h18M4 6l1 15a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2l1-15M10 11v6M14 11v6" />
