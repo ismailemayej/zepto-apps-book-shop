@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import BookList from "../BookList";
 import Loading from "../Loading";
 import { Context } from "../../App";
@@ -12,11 +12,23 @@ export type TBook = {
   bookshelves: string[];
   download_count: number;
 };
+
 const Home = () => {
   const books = useContext(Context);
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerPage] = useState(10);
   const [selectedGenre, setSelectedGenre] = useState<string>("All");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // 1 second delay
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, []); // Run once on component mount
 
   // Filter books by genre/topic
   const handleGenreChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -61,7 +73,7 @@ const Home = () => {
       {/* Dropdown Filter */}
       <div className="filter-section mb-1 mx-14 flex justify-end mt-4">
         <select
-          className="p-2 rounded-xl transition duration-200 ease-in-out transform  focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="p-2 rounded-xl transition duration-200 ease-in-out transform focus:outline-none focus:ring-2 focus:ring-blue-500"
           id="genre"
           value={selectedGenre}
           onChange={handleGenreChange}
@@ -80,46 +92,48 @@ const Home = () => {
 
       <div className="home">
         {/* Data Mapping */}
-        {books ? (
-          records.map((book) => <BookList key={book.id} book={book} />)
-        ) : (
+        {books.length === 0 ? (
           <Loading />
+        ) : (
+          records.map((book) => <BookList key={book.id} book={book} />)
         )}
       </div>
 
       {/* Pagination */}
-      <nav className="border p-1">
-        <ul className="custom-flex-container">
-          {/* Previous Page Button */}
-          <li className="row-item">
-            <a href="#" onClick={prePage}>
-              Prev
-            </a>
-          </li>
-
-          {/* Page Number Buttons */}
-          {numbers.map((number) => (
-            <li
-              className={`custom-item ${
-                currentPage === number
-                  ? "bg-blue-500 text-white rounded-lg px-4"
-                  : ""
-              }`}
-              onClick={() => changeCPage(number)}
-              key={number}
-            >
-              {number}
+      {!isLoading && (
+        <nav className="border p-1">
+          <ul className="custom-flex-container">
+            {/* Previous Page Button */}
+            <li className="row-item">
+              <a href="#" onClick={prePage}>
+                Prev
+              </a>
             </li>
-          ))}
 
-          {/* Next Page Button */}
-          <li className="custom-row-item">
-            <a href="#" onClick={nextPage}>
-              Next
-            </a>
-          </li>
-        </ul>
-      </nav>
+            {/* Page Number Buttons */}
+            {numbers.map((number) => (
+              <li
+                className={`custom-item ${
+                  currentPage === number
+                    ? "bg-blue-500 text-white rounded-lg px-4"
+                    : ""
+                }`}
+                onClick={() => changeCPage(number)}
+                key={number}
+              >
+                {number}
+              </li>
+            ))}
+
+            {/* Next Page Button */}
+            <li className="custom-row-item">
+              <a href="#" onClick={nextPage}>
+                Next
+              </a>
+            </li>
+          </ul>
+        </nav>
+      )}
     </div>
   );
 };
