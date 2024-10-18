@@ -6,7 +6,7 @@ const Modal = () => {
     <div>
       <button onClick={() => setShowModal(true)}>Show Modal</button>
       {showModal && (
-        <div className="modal">
+        <div className="modal z-10">
           <div className="modal-content">
             <span className="close" onClick={() => setShowModal(false)}>
               &times;
