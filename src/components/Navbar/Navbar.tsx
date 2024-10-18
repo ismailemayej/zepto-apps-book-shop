@@ -2,9 +2,11 @@ import { useContext, useState, useEffect } from "react";
 import { Context } from "../../App";
 import { Link } from "react-router-dom";
 import WishList from "../WishList/WishList";
+import { TBook } from "../Home/Home";
+import BookList from "../BookList";
 
 const Navbar = () => {
-  const datas = useContext(Context);
+  const datas = useContext(Context) as TBook[]; // Ensure Context is typed correctly
   const [value, setValue] = useState<string>("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [total, setTotal] = useState<number>(0);
@@ -33,14 +35,17 @@ const Navbar = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
+
   // Handle form submission
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent the default form submission behavior
     // You can add any additional logic here if needed
   };
+
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
   };
+
   return (
     <div>
       <nav className="flex justify-between items-center shadow-xl lg:mx-14 px-7 lg:py-3 py-1 rounded-md border">
@@ -50,7 +55,6 @@ const Navbar = () => {
         </div>
         <div className="flex gap-3 items-center mr-1">
           {/* Wishlist Icon */}
-
           <div className="relative inline-block">
             <svg
               onClick={toggleMenu}
@@ -105,6 +109,7 @@ const Navbar = () => {
           </form>
         </div>
       </nav>
+
       {/* Filter and mapping for data show in UI */}
       {value &&
         datas
@@ -127,6 +132,19 @@ const Navbar = () => {
             No Search Data
           </div>
         )}
+
+      {/* Display BookList based on filtered data */}
+      {value && datas.length > 0 && (
+        <div className="my-4">
+          {datas
+            .filter((item) =>
+              item?.title?.toLowerCase().includes(value.toLowerCase())
+            )
+            .map((book) => (
+              <BookList key={book.id} book={book} />
+            ))}
+        </div>
+      )}
     </div>
   );
 };
