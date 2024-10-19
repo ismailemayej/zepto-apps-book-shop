@@ -2,7 +2,6 @@ import { useContext, useState, useEffect } from "react";
 import BookList from "../BookList";
 import Loading from "../Loading";
 import { Context } from "../../App";
-
 export type TBook = {
   id: number;
   title: string;
@@ -26,14 +25,12 @@ const Home = () => {
       await new Promise((resolve) => setTimeout(resolve, 1000)); // 1 second delay
       setIsLoading(false);
     };
-
     fetchData();
-  }, []); // Run once on component mount
+  }, []);
 
-  // Filter books by genre/topic
   const handleGenreChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedGenre(event.target.value);
-    setCurrentPage(1); // Reset to first page when genre is changed
+    setCurrentPage(1);
   };
 
   const filteredBooks =
@@ -45,7 +42,6 @@ const Home = () => {
             book.bookshelves.includes(selectedGenre)
         );
 
-  // Pagination logic
   const LIndex = currentPage * postPerPage;
   const FIndex = LIndex - postPerPage;
   const records = filteredBooks.slice(FIndex, LIndex);
@@ -71,9 +67,9 @@ const Home = () => {
   return (
     <div>
       {/* Dropdown Filter */}
-      <div className="filter-section mb-1 mx-14 flex justify-end mt-4">
+      <div className="filter-section mb-4 lg:mx-14 flex justify-end mt-4">
         <select
-          className="p-2 rounded-xl transition duration-200 ease-in-out transform focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="p-2 rounded-xl transition duration-300 ease-in-out transform focus:outline-none focus:ring-4 focus:ring-blue-500 hover:ring-2 hover:ring-blue-300"
           id="genre"
           value={selectedGenre}
           onChange={handleGenreChange}
@@ -90,46 +86,52 @@ const Home = () => {
         </select>
       </div>
 
-      <div className="home">
-        {/* Data Mapping */}
-        {books.length === 0 ? (
+      {/* Book List */}
+      <div className="home lg:mx-14 border grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-5 gap-6 animate-fade-in">
+        {isLoading ? (
           <Loading />
         ) : (
-          records.map((book) => <BookList key={book.id} book={book} />)
+          records.map((book) => (
+            <div className="opacity-0 animate-fade-in-up" key={book.id}>
+              <BookList book={book} />
+            </div>
+          ))
         )}
       </div>
 
       {/* Pagination */}
       {!isLoading && (
-        <nav className="border p-1">
-          <ul className="custom-flex-container">
-            {/* Previous Page Button */}
-            <li className="row-item">
-              <a href="#" onClick={prePage}>
-                Prev
-              </a>
-            </li>
-
-            {/* Page Number Buttons */}
-            {numbers.map((number) => (
-              <li
-                className={`custom-item ${
-                  currentPage === number
-                    ? "bg-blue-500 text-white rounded-lg px-4"
-                    : ""
-                }`}
-                onClick={() => changeCPage(number)}
-                key={number}
+        <nav className="border p-2 mb-10 mt-8">
+          <ul className="flex justify-center space-x-2">
+            <li>
+              <button
+                onClick={prePage}
+                className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition duration-300 ease-in-out"
               >
-                {number}
+                Prev
+              </button>
+            </li>
+            {numbers.map((number) => (
+              <li key={number}>
+                <button
+                  onClick={() => changeCPage(number)}
+                  className={`px-4 py-2 rounded-md transition duration-300 ease-in-out ${
+                    currentPage === number
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-200 text-gray-700 hover:bg-blue-500 hover:text-white"
+                  }`}
+                >
+                  {number}
+                </button>
               </li>
             ))}
-
-            {/* Next Page Button */}
-            <li className="custom-row-item">
-              <a href="#" onClick={nextPage}>
+            <li>
+              <button
+                onClick={nextPage}
+                className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition duration-300 ease-in-out"
+              >
                 Next
-              </a>
+              </button>
             </li>
           </ul>
         </nav>

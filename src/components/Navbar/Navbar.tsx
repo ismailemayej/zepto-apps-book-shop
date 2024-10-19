@@ -48,14 +48,14 @@ const Navbar = () => {
 
   return (
     <div>
-      <nav className="flex justify-between items-center shadow-xl lg:mx-14 px-7 lg:py-3 py-1 rounded-md border">
+      <nav className="flex  bg-white mt-1 justify-between items-center shadow-xl lg:mx-14 px-7 lg:py-3 py-1 rounded-md border">
         {/* Site Logo */}
         <div className="logo">
           <Link to="/">Logo</Link>
         </div>
         <div className="flex gap-3 items-center mr-1">
           {/* Wishlist Icon */}
-          <div className="relative inline-block">
+          <div className="lg:relative inline-block">
             <svg
               onClick={toggleMenu}
               xmlns="http://www.w3.org/2000/svg"
@@ -74,11 +74,10 @@ const Navbar = () => {
             <span className="bg-red-500 rounded-full text-xs text-white p-1 absolute -top-2 -right-2 font-bold">
               {total}
             </span>
-
             {/* Wishlist Menu */}
             <div>
               {isMenuOpen && (
-                <div className=" px-4 absolute w-72 right-0 bg-white shadow-lg rounded-md mt-2 z-10 transition-transform duration-300 ease-in-out transform opacity-100 scale-100">
+                <div className="px-4 absolute w-72 right-0 bg-white shadow-lg rounded-md mt-2 z-10 transition-transform duration-300 ease-in-out transform opacity-100 scale-100">
                   <WishList />
                 </div>
               )}
