@@ -65,7 +65,7 @@ const BookList = ({ book }: { book: TBook }) => {
   }, [isModalOpen]);
 
   return (
-    <div className="relative flex flex-col items-center shadow-2xl gap-6 border-gray-200 hover:bg-slate-200 hover:shadow-xl rounded-xl transition-all duration-500 ease-out py-3">
+    <div className="px-2 relative justify-center w-full flex-col items-center shadow-2xl border-gray-200 hover:bg-slate-200 hover:shadow-xl rounded-xl transition-all duration-500 ease-out">
       {/* Error handling section */}
       {error ? (
         <div className="text-red-500 font-bold">{error}</div>
@@ -76,37 +76,60 @@ const BookList = ({ book }: { book: TBook }) => {
             <img
               src={book.formats["image/jpeg"]}
               alt={book.title}
-              className="w-40 border h-60 pt-2 object-cover rounded-xl hover:rotate-6 transition-all duration-300 ease-in-out hover:scale-105"
+              className="w-full px-2 h-72 pt-2 object-cover rounded-xl hover:rotate-6 transition-all duration-300 ease-in-out hover:scale-105"
             />
           </div>
           {/* Book information in card */}
-          <div className="flex flex-col items-center w-48 h-[10rem] mb-3">
-            <h2 className="text-xl font-bold text-center line-clamp-2 mb-1">
+          <div className="flex flex-col items-center w-full h-[10rem] px-2 my-3">
+            <h2 className="lg:text-xl text-md font-bold line-clamp-2 mb-1">
               {book.title}
             </h2>
 
-            <p className="text-md text-gray-600 text-center mb-2">
+            <p className="text-md text-gray-600 mb-2">
               <span className="font-semibold">Author:</span>{" "}
               {book.authors
                 ? book.authors.map((author: any) => author.name).join(", ")
                 : "Unknown"}
             </p>
 
-            <div className="flex gap-2 justify-center mt-auto">
+            <div className="grid grid-cols-2 absolute bottom-2 gap-2 justify-center mx-1.5">
+              {/* Wish Button */}
               <button
                 onClick={toggleWish}
-                className={`bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded ${
+                className={`bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 lg:px-4 rounded-lg flex items-center justify-center gap-2 ${
                   isWished ? "opacity-50 cursor-not-allowed" : ""
                 }`}
                 disabled={isWished}
               >
-                {isWished ? "Unwish" : "Wish"}
+                {/* Show heart icon on mobile */}
+                <span className="lg:hidden">
+                  {/* Heart SVG Icon */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="white"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    className="w-5 h-5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3.172 5.172a4.992 4.992 0 017.07 0l.708.707.707-.707a4.992 4.992 0 017.07 7.07L12 21.414 3.172 12.242a4.992 4.992 0 010-7.07z"
+                    />
+                  </svg>
+                </span>
+                {isWished ? (
+                  <p className="lg:block hidden">Unwish</p>
+                ) : (
+                  <p className="lg:block hidden">Wish</p>
+                )}
               </button>
 
               {/* Details Button */}
               <button
                 onClick={openModal}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded"
+                className=" py-1.5 bg-blue-500 text-white w-full px-4 lg:px-10 rounded-lg"
               >
                 Details
               </button>

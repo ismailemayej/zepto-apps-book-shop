@@ -76,7 +76,7 @@ const Home = () => {
       </div>
 
       {/* Book List */}
-      <div className="home lg:mx-14 justify-center border grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-5 gap-6 animate-fade-in">
+      <div className="lg:bg-white lg:px-6 rounded-xl lg:mx-14 border grid md:grid-cols-3 grid-cols-2 lg:grid-cols-5 gap-1 lg:gap-3 animate-fade-in">
         {isLoading ? (
           <div className="flex justify-center items-center">
             <Loading />
