@@ -72,7 +72,7 @@ const WishList = () => {
                 alt={book.title}
                 className="w-12 h-12"
               />
-
+              {/* wishlish Bool Title */}
               <h1 className="hover:bg-orange-200 p-2 w-full px-4 rounded-lg">
                 {book.title}
               </h1>

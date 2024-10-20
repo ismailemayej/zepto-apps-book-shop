@@ -10,6 +10,7 @@ const DetailsModal = ({
   if (!isOpen) return null;
 
   return (
+    // This is Book Details Component
     <div className="fixed inset-0 z-50 w-80 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
         <button

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import WishList from "../WishList/WishList";
 import BookList from "../BookList";
 import { TBook } from "../../App";
+import logo from "../../../public/favcon.ico";
 
 const Navbar = () => {
   const { books } = useContext(Context); // Destructure correctly from context
@@ -47,10 +48,13 @@ const Navbar = () => {
     <div>
       <nav className="flex  bg-white mt-1 justify-between items-center shadow-xl lg:mx-14 px-7 lg:py-3 py-1 rounded-md border">
         <div className="logo">
-          <Link to="/">Logo</Link>
+          <Link to="/">
+            <img className=" h-14 w-14" src={logo} />
+          </Link>
         </div>
         <div className="flex gap-3 items-center mr-1">
           <div className="lg:relative inline-block">
+            {/* This is Hard Icon svg for wishlish */}
             <svg
               onClick={toggleMenu}
               xmlns="http://www.w3.org/2000/svg"
@@ -69,6 +73,7 @@ const Navbar = () => {
             <span className="bg-red-500 rounded-full text-xs text-white p-1 absolute -top-2 -right-2 font-bold">
               {total}
             </span>
+            {/* wishlist open togolbar */}
             <div>
               {isMenuOpen && (
                 <div className="px-4 absolute w-72 right-0 bg-white shadow-lg rounded-md mt-2 z-10 transition-transform duration-300 ease-in-out transform opacity-100 scale-100">
@@ -83,7 +88,7 @@ const Navbar = () => {
               )}
             </div>
           </div>
-
+          {/* books Search input and button */}
           <form className="flex gap-1" onSubmit={handleFormSubmit}>
             <input
               type="text"
@@ -101,7 +106,7 @@ const Navbar = () => {
           </form>
         </div>
       </nav>
-
+      {/* Searchbar Result Show UI */}
       {value &&
         books
           .filter((item: TBook) =>
