@@ -1,30 +1,56 @@
 import { Outlet } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
-import { useState, useEffect } from "react";
-import { createContext } from "react";
-export const Context = createContext<any[]>([]);
+import { useState, useEffect, createContext } from "react";
+
+export type TBook = {
+  id: number;
+  title: string;
+  formats: { [key: string]: string };
+  authors: { name: string }[];
+  subjects: string[];
+  bookshelves: string[];
+  download_count: number;
+};
+
+interface IContext {
+  books: TBook[];
+  isLoading: boolean;
+}
+
+export const Context = createContext<IContext>({ books: [], isLoading: true });
+
 function App() {
-  const [booksData, setBooksData] = useState([]);
+  const [books, setBooks] = useState<TBook[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("./data.json");
+        setIsLoading(true);
+        const response = await fetch("https://gutendex.com/books");
+        // const response = await fetch("./data.json");
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        setBooksData(data.results);
+        setBooks(data.results);
       } catch (error) {
         console.error("There was a problem with the fetch operation:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchData();
   }, []);
 
+  const data = {
+    books,
+    isLoading,
+  };
+
   return (
-    <Context.Provider value={booksData}>
+    <Context.Provider value={data}>
       <Navbar />
       <Outlet />
     </Context.Provider>

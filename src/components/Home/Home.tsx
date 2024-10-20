@@ -2,28 +2,17 @@ import { useContext, useState, useEffect } from "react";
 import BookList from "../BookList";
 import Loading from "../Loading";
 import { Context } from "../../App";
-export type TBook = {
-  id: number;
-  title: string;
-  formats: { [key: string]: string };
-  authors: { name: string }[];
-  subjects: string[];
-  bookshelves: string[];
-  download_count: number;
-};
+import { TBook } from "../../App";
 
 const Home = () => {
-  const books = useContext(Context);
+  const { books, isLoading } = useContext(Context);
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerPage] = useState(10);
   const [selectedGenre, setSelectedGenre] = useState<string>("All");
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // 1 second delay
-      setIsLoading(false);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     };
     fetchData();
   }, []);
@@ -36,11 +25,11 @@ const Home = () => {
   const filteredBooks =
     selectedGenre === "All"
       ? books
-      : books.filter(
-          (book) =>
+      : books?.filter(
+          (book: TBook) =>
             book.subjects.includes(selectedGenre) ||
             book.bookshelves.includes(selectedGenre)
-        );
+        ) || [];
 
   const LIndex = currentPage * postPerPage;
   const FIndex = LIndex - postPerPage;
@@ -87,11 +76,13 @@ const Home = () => {
       </div>
 
       {/* Book List */}
-      <div className="home lg:mx-14 border grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-5 gap-6 animate-fade-in">
+      <div className="home lg:mx-14 justify-center border grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-5 gap-6 animate-fade-in">
         {isLoading ? (
-          <Loading />
+          <div className="flex justify-center items-center">
+            <Loading />
+          </div>
         ) : (
-          records.map((book) => (
+          records.map((book: TBook) => (
             <div className="opacity-0 animate-fade-in-up" key={book.id}>
               <BookList book={book} />
             </div>

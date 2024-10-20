@@ -2,11 +2,11 @@ import { useContext, useState, useEffect } from "react";
 import { Context } from "../../App";
 import { Link } from "react-router-dom";
 import WishList from "../WishList/WishList";
-import { TBook } from "../Home/Home";
 import BookList from "../BookList";
+import { TBook } from "../../App";
 
 const Navbar = () => {
-  const datas = useContext(Context) as TBook[]; // Ensure Context is typed correctly
+  const { books } = useContext(Context); // Destructure correctly from context
   const [value, setValue] = useState<string>("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [total, setTotal] = useState<number>(0);
@@ -24,7 +24,6 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    // Update the total count when the component mounts
     updateTotalCount();
     window.addEventListener("storage", updateTotalCount);
     return () => {
@@ -36,10 +35,8 @@ const Navbar = () => {
     setValue(e.target.value);
   };
 
-  // Handle form submission
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // Prevent the default form submission behavior
-    // You can add any additional logic here if needed
+    e.preventDefault();
   };
 
   const toggleMenu = () => {
@@ -49,12 +46,10 @@ const Navbar = () => {
   return (
     <div>
       <nav className="flex  bg-white mt-1 justify-between items-center shadow-xl lg:mx-14 px-7 lg:py-3 py-1 rounded-md border">
-        {/* Site Logo */}
         <div className="logo">
           <Link to="/">Logo</Link>
         </div>
         <div className="flex gap-3 items-center mr-1">
-          {/* Wishlist Icon */}
           <div className="lg:relative inline-block">
             <svg
               onClick={toggleMenu}
@@ -74,7 +69,6 @@ const Navbar = () => {
             <span className="bg-red-500 rounded-full text-xs text-white p-1 absolute -top-2 -right-2 font-bold">
               {total}
             </span>
-            {/* Wishlist Menu */}
             <div>
               {isMenuOpen && (
                 <div className="px-4 absolute w-72 right-0 bg-white shadow-lg rounded-md mt-2 z-10 transition-transform duration-300 ease-in-out transform opacity-100 scale-100">
@@ -90,7 +84,6 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* Search Box */}
           <form className="flex gap-1" onSubmit={handleFormSubmit}>
             <input
               type="text"
@@ -109,22 +102,22 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Filter and mapping for data show in UI */}
       {value &&
-        datas
-          .filter((item) =>
+        books
+          .filter((item: TBook) =>
             item?.title?.toLowerCase().includes(value.toLowerCase())
           )
           .slice(0, 7)
-          .map((item) => (
+          .map((item: TBook) => (
             <div key={item.id}>
               <p className="mx-16 my-3 border-b py-2 px-4 hover:text-blue-500 bg-slate-50">
                 {item?.title}
               </p>
             </div>
           ))}
+
       {value &&
-        datas.filter((item) =>
+        books.filter((item: TBook) =>
           item?.title?.toLowerCase().includes(value.toLowerCase())
         ).length === 0 && (
           <div className="text-red-500 text-2xl text-center">
@@ -132,14 +125,13 @@ const Navbar = () => {
           </div>
         )}
 
-      {/* Display BookList based on filtered data */}
-      {value && datas.length > 0 && (
+      {value && books.length > 0 && (
         <div className="my-4">
-          {datas
-            .filter((item) =>
+          {books
+            .filter((item: TBook) =>
               item?.title?.toLowerCase().includes(value.toLowerCase())
             )
-            .map((book) => (
+            .map((book: TBook) => (
               <BookList key={book.id} book={book} />
             ))}
         </div>

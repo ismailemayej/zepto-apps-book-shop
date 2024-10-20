@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
-import { TBook } from "./Home/Home";
+import { useEffect, useState, useRef } from "react";
 import Details from "./Details";
+import { TBook } from "../App";
 
 const BookList = ({ book }: { book: TBook }) => {
   const [isWished, setIsWished] = useState(false);
-  const [isHovered, setIsHovered] = useState(false); // State to track hover status
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal open/close
   const [error, setError] = useState<string | null>(null);
+
+  // Reference for modal content
+  const modalRef = useRef<HTMLDivElement | null>(null);
 
   // Check local storage for wish status
   useEffect(() => {
@@ -35,12 +38,34 @@ const BookList = ({ book }: { book: TBook }) => {
     }
   }, [book]);
 
+  // Open and close modal
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  // Handle click outside modal
+  const handleOutsideClick = (event: MouseEvent) => {
+    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      closeModal();
+    }
+  };
+
+  useEffect(() => {
+    if (isModalOpen) {
+      // Attach event listener when modal is open
+      document.addEventListener("mousedown", handleOutsideClick);
+    } else {
+      // Cleanup event listener when modal is closed
+      document.removeEventListener("mousedown", handleOutsideClick);
+    }
+
+    // Cleanup on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [isModalOpen]);
+
   return (
-    <div
-      className="relative flex flex-col items-center shadow-2xl gap-6 border-gray-200 hover:bg-slate-200 hover:shadow-xl rounded-xl transition-all duration-500 ease-out py-3"
-      onMouseEnter={() => setIsHovered(true)} // Set hover to true
-      onMouseLeave={() => setIsHovered(false)} // Set hover to false
-    >
+    <div className="relative flex flex-col items-center shadow-2xl gap-6 border-gray-200 hover:bg-slate-200 hover:shadow-xl rounded-xl transition-all duration-500 ease-out py-3">
       {/* Error handling section */}
       {error ? (
         <div className="text-red-500 font-bold">{error}</div>
@@ -77,18 +102,29 @@ const BookList = ({ book }: { book: TBook }) => {
               >
                 {isWished ? "Unwish" : "Wish"}
               </button>
+
+              {/* Details Button */}
+              <button
+                onClick={openModal}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded"
+              >
+                Details
+              </button>
             </div>
           </div>
-          {/* Smooth hover transition for Details */}
-          <div
-            className={`absolute top-0 left-0 h-full overflow-scroll z-10 w-full bg-white p-2 rounded-xl shadow-lg transition-all duration-300 ease-in-out transform ${
-              isHovered
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-4"
-            }`}
-          >
-            {isHovered && <Details book={book} />}
-          </div>
+          {/* Modal */}
+          {isModalOpen && (
+            <div
+              ref={modalRef}
+              className={`absolute top-0 left-0 h-80 overflow-scroll z-0 w-full bg-white p-2 rounded-xl shadow-lg transition-all duration-300 ease-in-out transform ${
+                isModalOpen
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-4"
+              }`}
+            >
+              {isModalOpen && <Details book={book} />}
+            </div>
+          )}
         </>
       )}
     </div>
