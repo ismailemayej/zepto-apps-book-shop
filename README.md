@@ -1,4 +1,4 @@
-## Project: Zipto Books Shop
+## Project: Zepto Books Shop
 
 This is an online bookstore web application where users can browse books, view details, and add books to their wish list. Users can also manage their wish lists using local storage.
 
