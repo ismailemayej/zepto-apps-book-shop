@@ -4,7 +4,7 @@ This is an online bookstore web application where users can browse books, view d
 
 ### Live Link
 
-[Zipto Books Shop](https://zipto-books-shop.vercel.app/)
+[Zipto Books Shop](https://zepto-apps-books-shop.vercel.app)
 
 ### Instructions for Use
 
