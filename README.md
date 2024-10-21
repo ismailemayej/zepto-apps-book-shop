@@ -42,6 +42,6 @@ This is an online bookstore web application where users can browse books, view d
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/your-username/zipto-books-shop.git
-   cd zipto-books-shop
+   git clone https://github.com/your-username/zepto-books-shop.git
+   cd zepto-books-shop
    ```
